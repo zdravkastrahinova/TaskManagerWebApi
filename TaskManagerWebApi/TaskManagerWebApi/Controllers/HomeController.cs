@@ -4,7 +4,7 @@ using System.Web.Http.Cors;
 namespace TaskManagerWebApi.Controllers
 {
     [RoutePrefix("")]
-    [EnableCorsAttribute("*", "*", "*")]
+    [EnableCors("*", "*", "*")]
     public class HomeController : ApiController
     {
         [HttpGet]

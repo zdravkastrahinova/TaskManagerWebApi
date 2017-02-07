@@ -7,34 +7,9 @@ using TaskManagerWebApi.Services;
 
 namespace TaskManagerWebApi.Controllers
 {
-    [RoutePrefix("api/users")]
-    [EnableCors("*", "*", "*")]
-    public class UsersController : ApiController
+    [RoutePrefix("users")]
+    public class UsersController : BaseRestController<User, UsersService>
     {
-        [HttpGet]
-        public IHttpActionResult GetAll()
-        {
-            UsersService usersService = new UsersService();
-            List<User> users = usersService.GetAll().ToList();
-
-            return Ok(users);
-        }
-
-        [HttpGet]
-        [Route("{id}")]
-        public IHttpActionResult GetById(int id)
-        {
-            UsersService usersService = new UsersService();
-            User user = usersService.GetByID(id);
-
-            if (user == null || user.IsDeleted)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
-
         [HttpPost]
         [Route("create")]
         public IHttpActionResult Create([FromBody] User model)
@@ -85,21 +60,6 @@ namespace TaskManagerWebApi.Controllers
             user.Password = model.Password;
 
             usersService.Save(user);
-
-            return Ok();
-        }
-
-        [HttpDelete]
-        [Route("delete/{id}")]
-        public IHttpActionResult Delete(int id)
-        {
-            if (id < 0)
-            {
-                return BadRequest();
-            }
-
-            UsersService usersService = new UsersService();
-            usersService.Delete(id);
 
             return Ok();
         }

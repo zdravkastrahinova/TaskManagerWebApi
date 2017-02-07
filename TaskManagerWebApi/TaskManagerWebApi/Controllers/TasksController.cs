@@ -3,39 +3,13 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using TaskManagerWebApi.Models;
-using TaskManagerWebApi.Repositories;
 using TaskManagerWebApi.Services;
 
 namespace TaskManagerWebApi.Controllers
 {
-    [RoutePrefix("api/tasks")]
-    [EnableCors("*", "*", "*")]
-    public class TasksController : ApiController
+    [RoutePrefix("tasks")]
+    public class TasksController : BaseRestController<Task, TasksService>
     {
-        [HttpGet]
-        public IHttpActionResult GetAll()
-        {
-            TasksService tasksService = new TasksService();
-            List<Task> tasks = tasksService.GetAll().ToList();
-
-            return Ok(tasks);
-        }
-
-        [HttpGet]
-        [Route("{id}")]
-        public IHttpActionResult GetById(int id)
-        {
-            TasksService tasksService = new TasksService();
-            Task task = tasksService.GetByID(id);
-
-            if (task == null || task.IsDeleted)
-            {
-                return NotFound();
-            }
-
-            return Ok(task);
-        }
-
         [HttpPost]
         [Route("create")]
         public IHttpActionResult Create([FromBody] Task model)
@@ -86,21 +60,6 @@ namespace TaskManagerWebApi.Controllers
             task.IsComplete = model.IsComplete;
 
             tasksService.Save(task);
-
-            return Ok();
-        }
-
-        [HttpDelete]
-        [Route("delete/{id}")]
-        public IHttpActionResult Delete(int id)
-        {
-            if (id < 0)
-            {
-                return BadRequest();
-            }
-
-            TasksService tasksService = new TasksService();
-            tasksService.Delete(id);
 
             return Ok();
         }

@@ -1,40 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Cors;
+﻿using System.Web.Http;
 using TaskManagerWebApi.Models;
 using TaskManagerWebApi.Services;
 
 namespace TaskManagerWebApi.Controllers
 {
-    [RoutePrefix("api/notes")]
-    [EnableCors("*", "*", "*")]
-    public class NotesController : ApiController
+    [RoutePrefix("notes")]
+    public class NotesController : BaseRestController<Note, NotesService>
     {
-        [HttpGet]
-        public IHttpActionResult GetAll()
-        {
-            NotesService notesService = new NotesService();
-            List<Note> notes = notesService.GetAll().ToList();
-
-            return Ok(notes);
-        }
-
-        [HttpGet]
-        [Route("{id}")]
-        public IHttpActionResult GetById(int id)
-        {
-            NotesService notesService = new NotesService();
-            Note note = notesService.GetByID(id);
-
-            if (note == null || note.IsDeleted)
-            {
-                return NotFound();
-            }
-
-            return Ok(note);
-        }
-
         [HttpPost]
         [Route("create")]
         public IHttpActionResult Create([FromBody] Note model)
@@ -85,21 +57,6 @@ namespace TaskManagerWebApi.Controllers
             note.Content = model.Content;
 
             notesService.Save(note);
-
-            return Ok();
-        }
-
-        [HttpDelete]
-        [Route("delete/{id}")]
-        public IHttpActionResult Delete(int id)
-        {
-            if (id < 0)
-            {
-                return BadRequest();
-            }
-
-            NotesService notesService = new NotesService();
-            notesService.Delete(id);
 
             return Ok();
         }

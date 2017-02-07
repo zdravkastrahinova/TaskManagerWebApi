@@ -22,9 +22,9 @@ namespace TaskManagerWebApi.Repositories
             return this.dbSet.Find(id);
         }
 
-        public List<T> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            return this.dbSet.Where(i => !i.IsDeleted).ToList();
+            return this.dbSet.Where(i => !i.IsDeleted);
         }
 
         private void Insert(T item)

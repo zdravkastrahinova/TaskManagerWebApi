@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using TaskManagerWebApi.Models;
 using TaskManagerWebApi.Repositories;
+using TaskManagerWebApi.Services;
 
 namespace TaskManagerWebApi.Controllers
 {
@@ -13,8 +15,8 @@ namespace TaskManagerWebApi.Controllers
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            TasksRepository tasksRepo = new TasksRepository();
-            List<Task> tasks = tasksRepo.GetAll();
+            TasksService tasksService = new TasksService();
+            List<Task> tasks = tasksService.GetAll().ToList();
 
             return Ok(tasks);
         }
@@ -22,9 +24,9 @@ namespace TaskManagerWebApi.Controllers
         [HttpGet]
         [Route("{id}")]
         public IHttpActionResult GetById(int id)
-        {            
-            TasksRepository tasksRepo = new TasksRepository();
-            Task task = tasksRepo.GetByID(id);
+        {
+            TasksService tasksService = new TasksService();
+            Task task = tasksService.GetByID(id);
 
             if (task == null || task.IsDeleted)
             {
@@ -43,7 +45,7 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            TasksRepository tasksRepo = new TasksRepository();
+            TasksService tasksService = new TasksService();
 
             Task task = new Task();
             task.ID = model.ID;
@@ -51,7 +53,7 @@ namespace TaskManagerWebApi.Controllers
             task.Name = model.Name;
             task.IsComplete = model.IsComplete;
 
-            tasksRepo.Save(task);
+            tasksService.Save(task);
 
             return Ok(task);
         }
@@ -70,8 +72,8 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            TasksRepository tasksRepo = new TasksRepository();
-            Task task = tasksRepo.GetByID(model.ID);
+            TasksService tasksService = new TasksService();
+            Task task = tasksService.GetByID(model.ID);
 
             if (task == null || task.IsDeleted)
             {
@@ -83,7 +85,7 @@ namespace TaskManagerWebApi.Controllers
             task.Name = model.Name;
             task.IsComplete = model.IsComplete;
 
-            tasksRepo.Save(task);
+            tasksService.Save(task);
 
             return Ok();
         }
@@ -97,10 +99,20 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            TasksRepository tasksRepo = new TasksRepository();
-            tasksRepo.Delete(id);
+            TasksService tasksService = new TasksService();
+            tasksService.Delete(id);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("{id}/notes")]
+        public IHttpActionResult GetNotes(int id)
+        {
+            TasksService tasksService = new TasksService();
+            List<Note> notes = tasksService.GetByTaskID(id).ToList();
+
+            return Ok(notes);
         }
     }
 }

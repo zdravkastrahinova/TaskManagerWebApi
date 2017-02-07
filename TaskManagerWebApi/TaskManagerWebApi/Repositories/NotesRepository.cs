@@ -1,4 +1,6 @@
-﻿using TaskManagerWebApi.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TaskManagerWebApi.Models;
 
 namespace TaskManagerWebApi.Repositories
 {

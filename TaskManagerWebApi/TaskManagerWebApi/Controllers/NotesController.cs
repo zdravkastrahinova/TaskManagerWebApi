@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using TaskManagerWebApi.Models;
-using TaskManagerWebApi.Repositories;
+using TaskManagerWebApi.Services;
 
 namespace TaskManagerWebApi.Controllers
 {
@@ -13,8 +14,8 @@ namespace TaskManagerWebApi.Controllers
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            NotesRepository notesRepo = new NotesRepository();
-            List<Note> notes = notesRepo.GetAll();
+            NotesService notesService = new NotesService();
+            List<Note> notes = notesService.GetAll().ToList();
 
             return Ok(notes);
         }
@@ -23,8 +24,8 @@ namespace TaskManagerWebApi.Controllers
         [Route("{id}")]
         public IHttpActionResult GetById(int id)
         {
-            NotesRepository notesRepo = new NotesRepository();
-            Note note = notesRepo.GetByID(id);
+            NotesService notesService = new NotesService();
+            Note note = notesService.GetByID(id);
 
             if (note == null || note.IsDeleted)
             {
@@ -43,7 +44,7 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            NotesRepository notesRepo = new NotesRepository();
+            NotesService notesService = new NotesService();
 
             Note note = new Note();
             note.ID = model.ID;
@@ -51,7 +52,7 @@ namespace TaskManagerWebApi.Controllers
             note.Title = model.Title;
             note.Content = model.Content;
 
-            notesRepo.Save(note);
+            notesService.Save(note);
 
             return Ok(note);
         }
@@ -70,8 +71,8 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            NotesRepository notesRepo = new NotesRepository();
-            Note note = notesRepo.GetByID(model.ID);
+            NotesService notesService = new NotesService();
+            Note note = notesService.GetByID(model.ID);
 
             if (note == null || note.IsDeleted)
             {
@@ -83,7 +84,7 @@ namespace TaskManagerWebApi.Controllers
             note.Title = model.Title;
             note.Content = model.Content;
 
-            notesRepo.Save(note);
+            notesService.Save(note);
 
             return Ok();
         }
@@ -97,8 +98,8 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            NotesRepository notesRepo = new NotesRepository();
-            notesRepo.Delete(id);
+            NotesService notesService = new NotesService();
+            notesService.Delete(id);
 
             return Ok();
         }

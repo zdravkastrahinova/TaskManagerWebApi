@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using TaskManagerWebApi.Models;
-using TaskManagerWebApi.Repositories;
+using TaskManagerWebApi.Services;
 
 namespace TaskManagerWebApi.Controllers
 {
@@ -13,8 +14,8 @@ namespace TaskManagerWebApi.Controllers
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            UsersRepository usersRepo = new UsersRepository();
-            List<User> users = usersRepo.GetAll();
+            UsersService usersService = new UsersService();
+            List<User> users = usersService.GetAll().ToList();
 
             return Ok(users);
         }
@@ -23,8 +24,8 @@ namespace TaskManagerWebApi.Controllers
         [Route("{id}")]
         public IHttpActionResult GetById(int id)
         {
-            UsersRepository usersRepo = new UsersRepository();
-            User user = usersRepo.GetByID(id);
+            UsersService usersService = new UsersService();
+            User user = usersService.GetByID(id);
 
             if (user == null || user.IsDeleted)
             {
@@ -43,14 +44,15 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            UsersRepository usersRepo = new UsersRepository();
+            UsersService usersService = new UsersService();
 
             User user = new User();
             user.ID = model.ID;
+            user.Name = model.Name;
             user.Email = model.Email;
             user.Password = model.Password;
 
-            usersRepo.Save(user);
+            usersService.Save(user);
 
             return Ok(user);
         }
@@ -69,8 +71,8 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            UsersRepository usersRepo = new UsersRepository();
-            User user = usersRepo.GetByID(model.ID);
+            UsersService usersService = new UsersService();
+            User user = usersService.GetByID(model.ID);
 
             if (user == null || user.IsDeleted)
             {
@@ -78,10 +80,11 @@ namespace TaskManagerWebApi.Controllers
             }
 
             user.ID = model.ID;
+            user.Name = model.Name;
             user.Email = model.Email;
             user.Password = model.Password;
 
-            usersRepo.Save(user);
+            usersService.Save(user);
 
             return Ok();
         }
@@ -95,10 +98,20 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
 
-            UsersRepository usersRepo = new UsersRepository();
-            usersRepo.Delete(id);
+            UsersService usersService = new UsersService();
+            usersService.Delete(id);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("{id}/tasks")]
+        public IHttpActionResult GetTasks(int id)
+        {
+            UsersService usersService = new UsersService();
+            List<Task> tasks = usersService.GetByUserID(id).ToList();
+
+            return Ok(tasks);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace TaskManagerWebApi.Controllers
         public TasksController() : base(new TasksService()) { }
 
         [HttpGet]
-        [Route("users/{userId}/tasks")]
+        [Route("~/api/users/{userId}/tasks")]
         public IHttpActionResult GetTasks(int userId)
         {
             List<Task> tasks = this.Service.GetByUserID(userId).ToList();

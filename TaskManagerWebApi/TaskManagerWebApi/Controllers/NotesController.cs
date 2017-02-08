@@ -11,7 +11,7 @@ namespace TaskManagerWebApi.Controllers
         public NotesController() : base(new NotesService()) { }
 
         [HttpGet]
-        [Route("tasks/{taskId}/notes")]
+        [Route("~/api/tasks/{taskId}/notes")]
         public IHttpActionResult GetNotes(int taskId)
         {
             List<Note> notes = this.Service.GetByTaskID(taskId).ToList();

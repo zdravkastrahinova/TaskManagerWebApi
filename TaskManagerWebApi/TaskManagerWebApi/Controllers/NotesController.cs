@@ -6,15 +6,15 @@ using TaskManagerWebApi.Services;
 
 namespace TaskManagerWebApi.Controllers
 {
-    [RoutePrefix("notes")]
     public class NotesController : BaseRestController<Note, NotesService>
     {
+        public NotesController() : base(new NotesService()) { }
+
         [HttpGet]
-        [Route("{id}/notes")]
-        public IHttpActionResult GetNotes(int id)
+        [Route("tasks/{taskId}/notes")]
+        public IHttpActionResult GetNotes(int taskId)
         {
-            NotesService service = new NotesService();
-            List<Note> notes = service.GetByTaskID(id).ToList();
+            List<Note> notes = this.Service.GetByTaskID(taskId).ToList();
 
             return Ok(notes);
         }

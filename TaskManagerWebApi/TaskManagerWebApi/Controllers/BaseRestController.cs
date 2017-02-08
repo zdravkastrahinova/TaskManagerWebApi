@@ -10,21 +10,21 @@ namespace TaskManagerWebApi.Controllers
 {
     [RoutePrefix("api/")]
     [EnableCors("*", "*", "*")]
-    public class BaseRestController<TModel, TService> : ApiController 
+    public abstract class BaseRestController<TModel, TService> : ApiController 
         where TModel: BaseModel, new()
         where TService: BaseService<TModel>
     {
-        protected BaseService<TModel> service;
+        protected TService Service;
 
-        public BaseRestController()
+        public BaseRestController(TService service)
         {
-            this.service = new BaseService<TModel>();
+            this.Service = service;
         }
 
         [HttpGet]
         public IHttpActionResult GetAll()
         {
-            List<TModel> items = service.GetAll().ToList();
+            List<TModel> items = Service.GetAll().ToList();
 
             return Ok(items);
         }
@@ -33,7 +33,7 @@ namespace TaskManagerWebApi.Controllers
         [Route("{id}")]
         public IHttpActionResult GetById(int id)
         {
-            TModel item = service.GetByID(id);
+            TModel item = Service.GetByID(id);
 
             if (item == null || item.IsDeleted)
             {
@@ -55,7 +55,7 @@ namespace TaskManagerWebApi.Controllers
             
             Mapper.Map(model, item, typeof(TModel), typeof(TModel));
 
-            service.Save(item);
+            Service.Save(item);
 
             return Ok(item);
         }
@@ -74,7 +74,7 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
             
-            TModel item = service.GetByID(model.ID);
+            TModel item = Service.GetByID(model.ID);
 
             if (item == null || item.IsDeleted)
             {
@@ -83,7 +83,7 @@ namespace TaskManagerWebApi.Controllers
 
             Mapper.Map(model, item, typeof(TModel), typeof(TModel));
 
-            service.Save(item);
+            Service.Save(item);
 
             return Ok(item);
         }
@@ -97,7 +97,7 @@ namespace TaskManagerWebApi.Controllers
                 return BadRequest();
             }
             
-            service.Delete(id);
+            Service.Delete(id);
 
             return Ok();
         }

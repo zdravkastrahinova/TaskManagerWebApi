@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web.Http;
 using TaskManagerWebApi.Models;
 using TaskManagerWebApi.Services;
@@ -10,17 +8,13 @@ namespace TaskManagerWebApi.Controllers
 {
     public class TasksController : BaseRestController<Task, TasksService>
     {
+        public TasksController() : base(new TasksService()) { }
+
         [HttpGet]
         [Route("users/{userId}/tasks")]
-        //[Route(":userId")]
-        public IHttpActionResult GetTasks(int? userId = null)
+        public IHttpActionResult GetTasks(int userId)
         {
-            Type type = this.service.GetType();
-            MethodInfo method = type.GetMethod("GetByUserID");
-            ParameterInfo[] parameters = method.GetParameters();
-            object classInstance = Activator.CreateInstance(type, null);
-
-            object tasks = method.Invoke(classInstance, parameters);
+            List<Task> tasks = this.Service.GetByUserID(userId).ToList();
 
             return Ok(tasks);
         }

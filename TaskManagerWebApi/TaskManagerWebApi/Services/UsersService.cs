@@ -20,10 +20,5 @@ namespace TaskManagerWebApi.Services
 
             return true;
         }
-
-        public IEnumerable<Task> GetByUserID(int userID)
-        {
-            return new TasksRepository().GetAll().Where(t => t.UserID == userID);
-        }
     }
 }

@@ -9,9 +9,9 @@ namespace TaskManagerWebApi.Services
     {
         public TasksService() : base() { }
 
-        public IEnumerable<Note> GetByTaskID(int taskID)
+        public IEnumerable<Task> GetByUserID(int userID)
         {
-            return  new NotesRepository().GetAll().Where(t => t.TaskID == taskID);
+            return new TasksRepository().GetAll().Where(t => t.UserID == userID);
         }
     }
 }

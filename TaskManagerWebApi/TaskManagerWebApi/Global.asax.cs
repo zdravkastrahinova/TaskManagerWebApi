@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using TaskManagerWebApi.App_Start;
 
 namespace TaskManagerWebApi
 {
@@ -11,6 +12,7 @@ namespace TaskManagerWebApi
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Bootstrapper.Run();
         }
     }
 }

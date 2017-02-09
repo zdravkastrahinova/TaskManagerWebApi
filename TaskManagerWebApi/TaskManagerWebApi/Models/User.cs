@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskManagerWebApi.Models
 {
@@ -8,6 +9,7 @@ namespace TaskManagerWebApi.Models
         public string Email { get; set; }
         public string Password { get; set; }
 
+        [NotMapped]
         public virtual ICollection<Task> Tasks { get; set; }
     }
 }

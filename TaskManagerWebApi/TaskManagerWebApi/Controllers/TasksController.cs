@@ -12,9 +12,18 @@ namespace TaskManagerWebApi.Controllers
 
         [HttpGet]
         [Route("~/api/users/{userId}/tasks")]
-        public IHttpActionResult GetTasks(int userId)
+        public IHttpActionResult GetTasksByUserID(int userId)
         {
             List<Task> tasks = this.Service.GetByUserID(userId).ToList();
+
+            return Ok(tasks);
+        }
+
+        [HttpGet]
+        [Route("~/api/sprints/{sprintId}/tasks")]
+        public IHttpActionResult GetTasksBySprintID(int sprintId)
+        {
+            List<Task> tasks = this.Service.GetBySprintID(sprintId).ToList();
 
             return Ok(tasks);
         }

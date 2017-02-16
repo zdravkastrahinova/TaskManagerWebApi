@@ -21,6 +21,11 @@ namespace TaskManagerWebApi.Mappings
                 .ForMember(u => u.DateCreated, opt => opt.Ignore())
                 .ForMember(u => u.DateUpdated, opt => opt.Ignore())
                 .ForMember(u => u.IsDeleted, opt => opt.Ignore());
+
+            CreateMap<Sprint, Sprint>()
+               .ForMember(u => u.DateCreated, opt => opt.Ignore())
+               .ForMember(u => u.DateUpdated, opt => opt.Ignore())
+               .ForMember(u => u.IsDeleted, opt => opt.Ignore());
         }
     }
 }

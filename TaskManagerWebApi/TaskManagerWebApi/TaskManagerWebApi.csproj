@@ -178,6 +178,7 @@
     <Compile Include="Controllers\BaseRestController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotesController.cs" />
+    <Compile Include="Controllers\SprintsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -188,16 +189,19 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Note.cs" />
+    <Compile Include="Models\Sprint.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AppContext.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\NotesRepository.cs" />
+    <Compile Include="Repositories\SprintsRepository.cs" />
     <Compile Include="Repositories\TasksRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Services\BaseService.cs" />
     <Compile Include="Services\NotesService.cs" />
+    <Compile Include="Services\SprintsService.cs" />
     <Compile Include="Services\TasksService.cs" />
     <Compile Include="Services\UsersService.cs" />
   </ItemGroup>

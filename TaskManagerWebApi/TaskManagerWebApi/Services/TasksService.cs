@@ -13,5 +13,10 @@ namespace TaskManagerWebApi.Services
         {
             return new TasksRepository().GetAll().Where(t => t.UserID == userID);
         }
+
+        public IEnumerable<Task> GetBySprintID(int sprintID)
+        {
+            return new TasksRepository().GetAll().Where(t => t.SprintID == sprintID);
+        }
     }
 }

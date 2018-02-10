@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TaskManagerWebApi.Models;
 using TaskManagerWebApi.Repositories;
 
@@ -11,7 +10,7 @@ namespace TaskManagerWebApi.Services
 
         public bool IfUserExists(User model)
         {
-            User user = new UsersRepository().GetAll().FirstOrDefault(u => u.Email == model.Email);
+            User user = new UsersRepository().GetAll().FirstOrDefault(u => u.ID != model.ID && u.Email == model.Email);
 
             if (user == null)
             {

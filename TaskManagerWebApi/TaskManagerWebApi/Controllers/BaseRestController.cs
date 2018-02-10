@@ -34,7 +34,6 @@ namespace TaskManagerWebApi.Controllers
         public IHttpActionResult GetById(int id)
         {
             TModel item = Service.GetByID(id);
-
             if (item == null || item.IsDeleted)
             {
                 return NotFound();
@@ -44,17 +43,15 @@ namespace TaskManagerWebApi.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Create([FromBody] TModel model)
+        public virtual IHttpActionResult Create([FromBody] TModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
             
-            TModel item = new TModel();
-            
+            TModel item = new TModel();       
             Mapper.Map(model, item, typeof(TModel), typeof(TModel));
-
             Service.Save(item);
 
             return Ok(item);
@@ -62,7 +59,7 @@ namespace TaskManagerWebApi.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public IHttpActionResult Edit([FromBody] TModel model, int id)
+        public virtual IHttpActionResult Edit([FromBody] TModel model, int id)
         {
             if (model.ID != id)
             {
@@ -75,14 +72,12 @@ namespace TaskManagerWebApi.Controllers
             }
             
             TModel item = Service.GetByID(model.ID);
-
             if (item == null || item.IsDeleted)
             {
                 return NotFound();
             }
 
             Mapper.Map(model, item, typeof(TModel), typeof(TModel));
-
             Service.Save(item);
 
             return Ok(item);

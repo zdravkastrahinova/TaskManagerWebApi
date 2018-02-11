@@ -60,12 +60,10 @@ namespace TaskManagerWebApi.Repositories
         public void Delete(int id)
         {
             T item = GetByID(id);
-
+            
             if (item != null)
             {
-                item.IsDeleted = true;
-                item.DateUpdated = DateTime.Now;
-
+                this.dbSet.Remove(item);
                 this.context.SaveChanges();
             }
         }

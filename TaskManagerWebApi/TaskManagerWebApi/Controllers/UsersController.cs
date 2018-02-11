@@ -30,7 +30,6 @@ namespace TaskManagerWebApi.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
         public override IHttpActionResult Edit([FromBody] User model, int id)
         {
             if (model.ID != id)
